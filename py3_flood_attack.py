@@ -17,8 +17,20 @@ def main():
     )
 
     args = parser.parse_args()
-    if not SynFlood and not UDPFlood and not ICMPFlood:
-        pass
+    
+    dstIP = args.target
+    dstPort = args.port
+    repeat = args.repeat
+
+    if args.SynFlood:
+        SynFlood(dstIP, dstPort, repeat)
+    elif args.UDPFlood:
+        UDPFlood(dstIP, dstPort, repeat)
+    elif args.ICMPFlood:
+        ICMPFlood(dstIP, repeat)
+    else:
+        print("Attack Type is Missing")
+        return
 
 def SynFlood(dstIP,dstPort,repeat):
     pass
