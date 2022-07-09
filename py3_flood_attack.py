@@ -27,15 +27,21 @@ def main():
         print("Current Port is 80")
     if args.repeat:
         pass
-    
+
     if not SynFlood and not UDPFlood and not ICMPFlood:
         pass
-    
-def SynFlood():
+
+
+def SynFlood(dstIP,dstPort,repeat):
     pass
-def UDPFlood():
+
+
+def UDPFlood(dstIP,dstPort,repeat):
     pass
-def ICMPFlood():
+
+
+def ICMPFlood(dstIP,repeat):
     pass
+
 
 main()
