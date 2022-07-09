@@ -15,11 +15,20 @@ def main():
     args = parser.parse_args()
     if args.type:
         pass
+    else:
+        print("Attack Type is Missing")
     if args.target:
-        pass
+        print(args.target)
+    else:
+        print("Targert is Missing")
     if args.port:
         pass
+    else:
+        print("Current Port is 80")
     if args.repeat:
         pass
+    
+
+# def set
 
 main()
