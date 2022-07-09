@@ -9,7 +9,7 @@ def main():
     parser = ArgumentParser()
     parser.add_argument("--SynFlood", "-s", help="Syn Flood Attack")
     parser.add_argument("--UDPFlood", "-u", help="UDP Flood Attack")
-    parser.add_argument("--ICMPFlood", "i", help="ICMP Flood Attack")
+    parser.add_argument("--ICMPFlood", "-i", help="ICMP Flood Attack")
     parser.add_argument("--target", "-t", required=True, help="target IP address")
     parser.add_argument("--port", "-p", default=80, help="target port number")
     parser.add_argument(
@@ -37,4 +37,5 @@ def UDPFlood():
     pass
 def ICMPFlood():
     pass
+
 main()
