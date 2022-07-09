@@ -31,6 +31,10 @@ def main():
     if not SynFlood and not UDPFlood and not ICMPFlood:
         pass
     
-# def set
-
+def SynFlood():
+    pass
+def UDPFlood():
+    pass
+def ICMPFlood():
+    pass
 main()
