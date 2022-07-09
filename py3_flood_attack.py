@@ -17,20 +17,8 @@ def main():
     )
 
     args = parser.parse_args()
-    if args.target:
-        print(args.target)
-    else:
-        print("Targert is Missing")
-    if args.port:
-        pass
-    else:
-        print("Current Port is 80")
-    if args.repeat:
-        pass
-
     if not SynFlood and not UDPFlood and not ICMPFlood:
         pass
-
 
 def SynFlood(dstIP,dstPort,repeat):
     pass
