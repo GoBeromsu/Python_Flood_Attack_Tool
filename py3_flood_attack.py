@@ -32,6 +32,10 @@ def main():
         print("Attack Type is Missing")
         return
 
+def randomSrcIP():
+    ip = ".".join(map(str, (randint(0, 255)for _ in range(4))))
+    return ip 
+
 def SynFlood(dstIP,dstPort,repeat):
     pass
 
