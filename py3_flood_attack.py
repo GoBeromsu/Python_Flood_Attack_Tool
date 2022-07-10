@@ -7,9 +7,9 @@ from argparse import ArgumentParser
 # ICMP/UDP/TCP Flood Attack Tool
 def main():
     parser = ArgumentParser()
-    parser.add_argument("--SynFlood", "-s", help="Syn Flood Attack")
-    parser.add_argument("--UDPFlood", "-u", help="UDP Flood Attack")
-    parser.add_argument("--ICMPFlood", "-i", help="ICMP Flood Attack")
+    parser.add_argument("--SynFlood", "-s", action='store_true', help="Syn Flood Attack")
+    parser.add_argument("--UDPFlood", "-u", action='store_true', help="UDP Flood Attack")
+    parser.add_argument("--ICMPFlood", "-i", action='store_true', help="ICMP Flood Attack")
     parser.add_argument("--target", "-t", required=True, help="target IP address")
     parser.add_argument("--port", "-p", default=80, help="target port number")
     parser.add_argument(
