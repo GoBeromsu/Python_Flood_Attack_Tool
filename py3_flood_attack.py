@@ -8,12 +8,12 @@ import time
 data = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 # ICMP/UDP/TCP Flood Attack Tool
 def main():
-    print("______  _                    _    ___   _    _                 _      _____                _ ")
-    print("|  ___|| |                  | |  / _ \ | |  | |               | |    |_   _|              | |")
-    print("| |_   | |  ___    ___    __| | / /_\ \| |_ | |_   __ _   ___ | | __   | |    ___    ___  | |")
-    print("|  _|  | | / _ \  / _ \  / _` | |  _  || __|| __| / _` | / __|| |/ /   | |   / _ \  / _ \ | |")
-    print("| |    | || (_) || (_) || (_| | | | | || |_ | |_ | (_| || (__ |   <    | |  | (_) || (_) || |")
-    print("\_|    |_| \___/  \___/  \__,_| \_| |_/ \__| \__| \__,_| \___||_|\_\   \_/   \___/  \___/ |_|\n")
+    print("______  _                    _     ___   _    _                 _      _____                _ ")
+    print("|  ___|| |                  | |    / _ \ | |  | |               | |    |_   _|              | |")
+    print("| |_   | |  ___    ___    __| |   / /_\ \| |_ | |_   __ _   ___ | | __   | |    ___    ___  | |")
+    print("|  _|  | | / _ \  / _ \  / _` |   |  _  || __|| __| / _` | / __|| |/ /   | |   / _ \  / _ \ | |")
+    print("| |    | || (_) || (_) || (_| |   | | | || |_ | |_ | (_| || (__ |   <    | |  | (_) || (_) || |")
+    print("\_|    |_| \___/  \___/  \__,_|   \_| |_/ \__| \__| \__,_| \___||_|\_\   \_/   \___/  \___/ |_|\n")
     time.sleep(1)
     
     parser = ArgumentParser()
